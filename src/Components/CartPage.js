@@ -33,13 +33,13 @@ function CartPage() {
   }, [cart]);
 
   const getQuantity = (productId) => {
-    return cart.item[productId];
+    return cart.items[productId];
   };
   const increment = (productId) => {
     const oldQuantity = cart.items[productId];
     const _cart = { ...cart };
     _cart.items[productId] = oldQuantity + 1;
-    _cart.totalItems += 1;
+    _cart.totalItems = _cart.totalItems + 1;
     setCart(_cart);
   };
   const decrement = (productId) =>{
@@ -72,7 +72,9 @@ function CartPage() {
   }
   return (
     <>
-    { products.length ? 
+      {!products.length
+      ? <img src={empty_cart} className="mx-auto w-1/2 mt-12" />
+      :
       <div className="container mx-auto w-full lg:w-1/2 pb-24">
         <h1 className="my-12 font-bold">Cart Items</h1>
         <ul>
@@ -87,12 +89,11 @@ function CartPage() {
                     </span>
                   </div>
                   <div>
-                    <button onClick={decrement(product._id)} className="bg-yellow-500 px-4 py-2 rounded-full leading-none">
+                    <button onClick = {() => decrement(product._id)} className="bg-yellow-500 px-4 py-2 rounded-full leading-none">
                       -
                     </button>
                     <b className="px-4"> {getQuantity(product._id)}</b>
-                    <button
-                      onClick={increment(product._id)}
+                    <button onClick ={() => increment(product._id)}
                       className="bg-yellow-500 px-4 py-2 rounded-full leading-none"
                     >
                       +
@@ -116,10 +117,8 @@ function CartPage() {
             Order Now
           </button>
         </div>
-      </div>
-      :
-      <img src={empty_cart} className="mx-auto w-1/2 mt-12" />
-        }
+      </div> 
+}     
     </>
   );
 }
